@@ -18,11 +18,11 @@ sudo apt install openssh-server
 Подключение VM2 к VM1:
 Найди IP-адрес VM1 внутри сети VirtualBox
 ip addr show
-
+![IP_Addr_show](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/Homework3/ip_addr_show.jpg)
 Запусти SSH-соединение с VM2:
 ssh User@IP
 ssh osboxes@192.168.8.8
-
+![SSP_User_Connect](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/Homework3/ssh_user%40IP.jpg)
 
 Шаг 3: Запрет подключения VM2 к хостовой ОС
 Запретить SSH-соединение с VM2 на хостовую ОС можно через iptables.
@@ -30,7 +30,7 @@ ssh osboxes@192.168.8.8
 На хостовой ОС добавить правило в iptables, которое блокирует подключения с VM2:
 
 sudo iptables -A INPUT -s 192.168.8.6 -j REJECT
-
+![iptable](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/Homework3/iptables_reject.jpg)
 Проверить 
 sudo iptables -L -v -n
 
