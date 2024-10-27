@@ -20,6 +20,8 @@ sudo apt install openssh-server
 ip addr show
 
 Запусти SSH-соединение с VM2:
+ssh User@IP
+ssh osboxes@192.168.8.8
 
 
 Шаг 3: Запрет подключения VM2 к хостовой ОС
