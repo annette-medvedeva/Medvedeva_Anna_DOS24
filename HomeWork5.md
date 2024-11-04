@@ -40,7 +40,9 @@ crontab -e
 Убедиться, что задание добавлено:
 crontab -l
 увидеть запись в списке задач.
+
 ![Script_apt_clear](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Result_script5.png)
+
 Теперь  скрипт будет автоматически выполняться раз в месяц в 16:00 и очищать кэш apt.
 
  Решение задачи 2.
@@ -67,9 +69,9 @@ http.createServer((req, res) => {
     res.end('200 OK');
 }).listen(MYAPP_PORT);
 console.log(`Server running at http://localhost:${MYAPP_PORT}/`);
-![Script_apt_clear]()
-2) Установить Node.js
-   
+
+
+2) Установить Node.js 
 sudo apt update
 sudo apt install -y curl software-properties-common
 curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
