@@ -45,8 +45,11 @@ sudo apt install packer
 
 Шаги для создания образа с Packer
 Шаг 1: Создайте Packer-конфигурационные файлы для VM1 
+
 Создайте директорию для проекта и перейдите в неё:
+
 mkdir packer_ubuntu_images
+
 cd packer_ubuntu_images
 
 Шаг 2: Установите плагин virtualbox для Packer
