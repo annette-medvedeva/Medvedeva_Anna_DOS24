@@ -82,7 +82,7 @@ npm -v
 3) Создать конфигурационный файл в каталоге /etc/systemd/system/.  например, myapp.service.
 sudo nano /etc/systemd/system/myapp.service
 Содержимое этого файла должно выглядеть так:
-![Service](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Systemd_task/myapp.service)
+![Service](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Systemd_task/Systemd_script_unit.png)
 [Unit]
 Description=My Node.js App
 After=network.target
