@@ -114,19 +114,30 @@ journalctl -u myapp.service
 ![journalctl](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/HomeWork5/Pictures/journalctl.png)
 
 5) Чтобы настроить syslog
+   
 Отключите подавление повторяющихся сообщений: Добавьте следующую строку в файл конфигурации /etc/rsyslog.conf или в отдельный файл конфигурации rsyslog (например, /etc/rsyslog.d/myapp.conf):
+
 $RepeatedMsgReduction off
+
 Это отключит сведение повторяющихся сообщений в один блок.
 
 Настройте правила для логирования: Добавьте в файл /etc/rsyslog.conf или /etc/rsyslog.d/myapp.conf правила для записи сообщений от myapp в отдельные файлы в зависимости от уровня серьезности:
+
 if $programname == 'myapp' and $syslogseverity < 5 then -/var/log/myapp/error.log
+
 if $programname == 'myapp' and $syslogseverity >= 5 then -/var/log/myapp/debug.log
+
 Здесь:
 
 syslogseverity < 5 направляет сообщения уровней "err" и выше (более серьезные) в error.log.
+
 syslogseverity >= 5 направляет менее критичные сообщения (например, "notice" и "info") в debug.log.
+
 Перезапустите rsyslog для применения изменений: sudo systemctl restart rsyslog
+
 Чтобы просмотреть логи, которые были настроены для записи в файлы /var/log/myapp/error.log и /var/log/myapp/debug.log, используйте одну из следующих команд:
 
+
 Просмотр последних строк файла: tail -f /var/log/myapp/error.log
+
 tail -f /var/log/myapp/debug.log
