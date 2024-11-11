@@ -40,7 +40,7 @@ crontab -e
 Убедиться, что задание добавлено:
 crontab -l
 увидеть запись в списке задач.
-![Script_apt_clear](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Result_script5.png)
+![Script_apt_clear](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/HomeWork5/Pictures/Result_script5.png)
 Теперь  скрипт будет автоматически выполняться раз в месяц в 16:00 и очищать кэш apt.
 
  Решение задачи 2.
@@ -88,14 +88,14 @@ Description=My Node.js App
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/node /home/anna/Downloads/Medvedeva_Anna_DOS24/Systemd_task/myapp.js
+ExecStart=/usr/bin/node /home/anna/Downloads/Medvedeva_Anna_DOS24/HomeWork5/Task2_Service/myapp.js
 Environment="MYAPP_PORT=3000"
 Restart=always
 User=anna
-WorkingDirectory=/home/anna/Downloads/Medvedeva_Anna_DOS24/Systemd_task
-
-[Install]
-WantedBy=multi-user.target
+WorkingDirectory=/home/anna/Downloads/Medvedeva_Anna_DOS24/HomeWork5/Task2_Service
+StandardOuput=syslog
+StandardError=syslog
+SyslogIndentifier =myapp
 
 4) Перезагрузить конфигурацию и сервис:
 
@@ -104,9 +104,29 @@ WantedBy=multi-user.target
 sudo systemctl daemon-reload
 sudo systemctl restart myapp
 sudo systemctl status myapp
+![Status](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/HomeWork5/Pictures/systemd_status.png)
 
 4) Проверка работы приложения
 curl http://localhost:3000/
+![curl_http](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/HomeWork5/Pictures/curr_localhost3000.png)
 
 journalctl -u myapp.service
+![journalctl](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/HomeWork5/Pictures/journalctl.png)
 
+5) Чтобы настроить syslog
+Отключите подавление повторяющихся сообщений: Добавьте следующую строку в файл конфигурации /etc/rsyslog.conf или в отдельный файл конфигурации rsyslog (например, /etc/rsyslog.d/myapp.conf):
+$RepeatedMsgReduction off
+Это отключит сведение повторяющихся сообщений в один блок.
+
+Настройте правила для логирования: Добавьте в файл /etc/rsyslog.conf или /etc/rsyslog.d/myapp.conf правила для записи сообщений от myapp в отдельные файлы в зависимости от уровня серьезности:
+if $programname == 'myapp' and $syslogseverity < 5 then -/var/log/myapp/error.log
+if $programname == 'myapp' and $syslogseverity >= 5 then -/var/log/myapp/debug.log
+Здесь:
+
+syslogseverity < 5 направляет сообщения уровней "err" и выше (более серьезные) в error.log.
+syslogseverity >= 5 направляет менее критичные сообщения (например, "notice" и "info") в debug.log.
+Перезапустите rsyslog для применения изменений: sudo systemctl restart rsyslog
+Чтобы просмотреть логи, которые были настроены для записи в файлы /var/log/myapp/error.log и /var/log/myapp/debug.log, используйте одну из следующих команд:
+
+Просмотр последних строк файла: tail -f /var/log/myapp/error.log
+tail -f /var/log/myapp/debug.log
