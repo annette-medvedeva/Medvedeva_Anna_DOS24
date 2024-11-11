@@ -1,0 +1,16 @@
+[Unit]
+Description=My Node.js App
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/anna/Downloads/Medvedeva_Anna_DOS24/HomeWork5/Task2_Service/myapp.js
+Environment="MYAPP_PORT=3000"
+Restart=always
+User=anna
+WorkingDirectory=/home/anna/Downloads/Medvedeva_Anna_DOS24/HomeWork5/Tasks2_Service
+StandardOuput=syslog
+StandardError=syslog
+SyslogIndentifier =myapp
+
+[Install]
+WantedBy=multi-user.target
