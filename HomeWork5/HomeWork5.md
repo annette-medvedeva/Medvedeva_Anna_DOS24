@@ -40,7 +40,9 @@ crontab -e
 Убедиться, что задание добавлено:
 crontab -l
 увидеть запись в списке задач.
+
 ![Script_apt_clear](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Result_script5.png)
+
 Теперь  скрипт будет автоматически выполняться раз в месяц в 16:00 и очищать кэш apt.
 
  Решение задачи 2.
@@ -66,10 +68,10 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('200 OK');
 }).listen(MYAPP_PORT);
-
 console.log(`Server running at http://localhost:${MYAPP_PORT}/`);
 
-2) Установить Node.js
+
+2) Установить Node.js 
 sudo apt update
 sudo apt install -y curl software-properties-common
 curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -82,7 +84,7 @@ npm -v
 3) Создать конфигурационный файл в каталоге /etc/systemd/system/.  например, myapp.service.
 sudo nano /etc/systemd/system/myapp.service
 Содержимое этого файла должно выглядеть так:
-
+![Service](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Systemd_task/Systemd_script_unit.png)
 [Unit]
 Description=My Node.js App
 After=network.target
@@ -104,9 +106,9 @@ WantedBy=multi-user.target
 sudo systemctl daemon-reload
 sudo systemctl restart myapp
 sudo systemctl status myapp
-
+![Systemd_status](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Systemd_task/systemd_status.png)
 4) Проверка работы приложения
 curl http://localhost:3000/
-
+![Curl](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork5/Systemd_task/curr_localhost3000.png)
 journalctl -u myapp.service
 
