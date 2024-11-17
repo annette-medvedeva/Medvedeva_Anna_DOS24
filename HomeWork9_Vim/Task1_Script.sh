@@ -1,6 +1,8 @@
-@REM AUTOEXEC.BAT DTK 386/40
+@REM 22 apr. 1999
+
+@REM AUTOEXEC.BAT 1-203 DTK 386/40
 ECHO OFF
-Path c:\dos;c:\stacker;c:\Util;c:\NC;C:\MOUSE
+Path c:\dos;c:\stacker;c:\Util;c:\NC;C:\GMOUSE
 SET PROMPT=$P$G
 SET TMP=C:\TEMP
 LH C:\UTIL\RKEGA
@@ -22,3 +24,4 @@ nc.exe
 goto end
 win.com
 :end
+
