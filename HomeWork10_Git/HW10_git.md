@@ -17,7 +17,7 @@ git checkout -b HomeWork10_Repos
 
 Создание 4 коммитов:
 git log --oneline
-![git_log]([HomeWork10_Git/Pictures/git_log.png](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/git_log.png))
+![git_log]([HomeWork10_Git/Pictures/git_log.png](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/git_log.png)
 
 Перейти к предыдущему коммиту с помощью команды:
 
