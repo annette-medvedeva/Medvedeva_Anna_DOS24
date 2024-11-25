@@ -17,7 +17,7 @@ git checkout -b HomeWork10_Repos
 
 Создание 4 коммитов:
 git log --oneline
-![git_log](HomeWork10_Git/Pictures/git_log.png)
+![git_log]([HomeWork10_Git/Pictures/git_log.png](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/git_log.png))
 
 Перейти к предыдущему коммиту с помощью команды:
 
@@ -25,7 +25,7 @@ git reflog
 
 чтобы увидеть историю изменений HEAD
 
-![git_reflog](HomeWork10_Git/Pictures/git_reflog.png)
+![git_reflog](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/git_reflog.png)
 
 Выберать коммит, к которому хотите вернуться, например, HEAD@{1} для предыдущего коммита.
 Используйте команду git reset для перехода:
@@ -39,14 +39,16 @@ git log --oneline
 Локальный коммит в main без git push:
 
 git checkout main
+![git_checkout](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/main.png)
+![git_checkout](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/main_output.png)
 
 Сделать изменения и коммит:
 
 echo "Temporary changes" > temp.txt
 git add temp.txt
 git commit -m "Add temp.txt"
-![git_checkout](HomeWork10_Git/Pictures/main.png)
-![](HomeWork10_Git/Pictures/main_output.png)
+
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/temp-branch2.png)
 Перенос коммита в новую ветку:
 
 git branch temp-branch
@@ -61,5 +63,5 @@ git checkout temp-branch
 echo "Another change" >> file1.txt
 git add file1.txt
 git commit -m "Update file1.txt with another change"
-
-![git_checkout_temp-branch](HomeWork10_Git/Pictures/Screenshot_11.png)
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/temp-branch2.png)
+![git_checkout_temp-branch]([HomeWork10_Git/Pictures/Screenshot_11.png](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/Screenshot_11.png))
