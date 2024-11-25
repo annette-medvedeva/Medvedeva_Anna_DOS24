@@ -34,7 +34,7 @@ git reset --hard HEAD@{1}
 
 Проверка
 git log --oneline
-
+![git_log](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork10_Git/HomeWork10_Git/Pictures/log_online.png)
 Локальный коммит в main без git push:
 
 git checkout main
