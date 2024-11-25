@@ -31,7 +31,6 @@ git reflog
 Используйте команду git reset для перехода:
 
 git reset --hard HEAD@{1}
-![git_reset](image.png)
 
 Проверка
 git log --oneline
