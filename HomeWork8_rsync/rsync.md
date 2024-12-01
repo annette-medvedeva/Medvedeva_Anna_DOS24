@@ -54,4 +54,4 @@ crontab -e
 
 0 * * * * gsutil -m rsync -r -e /home/anna gs://tms_123121419djscj_test/Medvedeva_Anna
 
-![gsutil]("https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork8_rsync/HomeWork8_rsync/Pictures/photo_2024-12-01_17-05-46.jpg")
+![gsutil](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork8_rsync/HomeWork8_rsync/Pictures/photo_2024-12-01_17-05-46.jpg)
