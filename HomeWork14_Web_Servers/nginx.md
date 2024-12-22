@@ -94,7 +94,7 @@ sudo systemctl restart apache2
 sudo systemctl restart nginx
 
 Теперь, при обращении к http://tms.by, Nginx будет перенаправлять запросы на Apache, который будет обслуживать их.
-
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/HomeWork14_Web_Servers/Pictures/proxyApach2.png)
 Опционально: Проксирование с учётом URL
 Если нужно проксировать трафик на разные серверы в зависимости от URL, можно добавить дополнительные location блоки в конфигурацию Nginx:
 
