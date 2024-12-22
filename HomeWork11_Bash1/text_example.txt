@@ -1,0 +1,9 @@
+API call examples
+
+https://pro.openweathermap.org/data/2.5/forecast/hourly?q=London,us&mode=xml&appid={API key}
+
+
+Searching by states available only for the USA locations.
+There is a possibility to receive a central district of the city/town with its own parameters (geographic coordinates/id/name) in API response. Please see the example below.
+
+https://pro.openweathermap.org/data/2.5/forecast/hourly?q=München,DE&appid={API key}

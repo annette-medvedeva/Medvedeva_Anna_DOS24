@@ -12,5 +12,3 @@ StandardOuput=syslog
 StandardError=syslog
 SyslogIndentifier =myapp
 
-[Install]
-WantedBy=multi-user.target

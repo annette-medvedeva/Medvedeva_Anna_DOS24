@@ -1,0 +1,11 @@
+Geocoding API
+Requesting API calls by geographical coordinates is the most accurate way to specify any location. If you need to convert city names and zip-codes to geo coordinates and the other way around automatically, please use our Geocoding API.
+
+Built-in geocoding
+Please use Geocoder API if you need automatic convert city names and zip-codes to geo coordinates and the other way around.
+
+Please note that API requests by city name, zip-codes and city id have been deprecated. Although they are still available for use, bug fixing and updates are no longer available for this functionality.
+
+Built-in API request by city name
+You can search weather forecast for 4 days (96 hours) with data every hour by city name. All weather data can be obtained in JSON and XML formats.
+

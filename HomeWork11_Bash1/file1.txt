@@ -1,0 +1,3 @@
+./search_string.sh
+./generate_files.sh
+./outputFile.sh

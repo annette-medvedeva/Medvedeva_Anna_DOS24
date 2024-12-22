@@ -139,9 +139,10 @@ sudo apt install nginx
 Проверьте статус nginx:
 sudo systemctl status nginx
 сервис работает (статус active (running)).
-![Status nginx](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork9_Vim/HomeWork9_Vim/pictures/status_nginx.png)
+
+
 Проверить, что nginx работает: Откройте веб-браузер и перейдите по адресу http://localhost:8080
-![Work nginx](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork9_Vim/HomeWork9_Vim/pictures/localhost_nginx.png)
+
 
 Шаг 2. Просмотр логов nginx
 Основные логи nginx: Логи nginx обычно находятся в каталогах /var/log/nginx. Для просмотра логов действий nginx вы можете использовать команду cat, less или tail.
@@ -172,7 +173,7 @@ top
 sudo apt install htop
 htop
 Вы можете использовать клавиши для сортировки по CPU, памяти и другим параметрам.
-![htop](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/HomeWork9_Vim/HomeWork9_Vim/pictures/htop_nginx.png)
+
 Использование команды vmstat: Для более детализированной информации о состоянии системы используйте команду vmstat:
 
 vmstat 1
