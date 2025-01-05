@@ -1,0 +1,7 @@
+sudo mysql -u root -p
+
+Сщздание дампа:
+mysqldump -u root -p Analysis_db > ~/backups/Analysis_db_backup.sql
+
+Восстановление базы данных из дампа:
+mysql -u root -p Analysis_db < ~/backups/Analysis_db_backup.sql
