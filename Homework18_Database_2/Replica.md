@@ -3,7 +3,7 @@
 
 EC2 для создания двух инстансов Ubuntu.
 Настройте обе машины на одной сети (в одной VPC, подсети и группе безопасности).
-![aws] (https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot%20from%202025-01-19%2019-26-19.png)
+![aws](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot%20from%202025-01-19%2019-26-19.png)
 
 Установите MySQL на обоих серверах:
 sudo apt update
