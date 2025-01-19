@@ -3,7 +3,8 @@
 
 EC2 для создания двух инстансов Ubuntu.
 Настройте обе машины на одной сети (в одной VPC, подсети и группе безопасности).
-![aws] 'https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot%20from%202025-01-19%2019-26-19.png'
+![aws] (https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot%20from%202025-01-19%2019-26-19.png')
+
 Установите MySQL на обоих серверах:
 sudo apt update
 sudo apt install mysql-server -y
@@ -14,6 +15,8 @@ sudo systemctl status mysql
 Настроить доступ между серверами:
 
 В группе безопасности AWS разрешить MySQL-порт 3306 между двумя серверами.
+![security group](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot%20from%202025-01-19%2019-31-38.png)
+
 
 Шаг 2: Настройка репликации (зеркалирование)
 Подготовка главного сервера (Master):
@@ -21,20 +24,29 @@ sudo systemctl status mysql
 Отредактировать файл конфигурации MySQL:
  
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
 Добавить параметры:
 
 [mysqld]
 server-id = 1
+relay-log = /var/log/mysql/mysql-relay-bin.log
 log_bin = /var/log/mysql/mysql-bin.log
-binlog_do_db = your_database_name  # Замените на имя вашей базы
+binlog_format = ROW
+binlog_do_db = test_replication
+bind-address            = 0.0.0.0
+mysqlx-bind-address     = 0.0.0.0
+![master_sql](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot%20from%202025-01-19%2019-35-02.png)
+
 Перезапустите MySQL:
- 
 sudo systemctl restart mysql
 
-Создать пользователя для репликации: Войдите в MySQL:
+Создать пользователя для репликации: 
+Войдите в MySQL:
+
 mysql -u root -p
 
 Выполнить:
+
 CREATE USER 'replica_user'@'%' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%';
 FLUSH PRIVILEGES;
@@ -53,13 +65,15 @@ sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 [mysqld]
 server-id = 2
 relay-log = /var/log/mysql/mysql-relay-bin.log
-
-
+bind-address            = 0.0.0.0
+mysqlx-bind-address     = 0.0.0.0
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Screenshot-23.png)
 Перезапустить MySQL:
+
 sudo systemctl restart mysql
 
-
 Настроить репликацию: 
+
 Войти в MySQL на втором сервере:
  
 mysql -u root -p
@@ -72,16 +86,21 @@ MASTER_LOG_FILE='mysql-bin.000012',  -- Значение из Master
 MASTER_LOG_POS=604;                 -- Значение из Master
 START SLAVE;
 SHOW SLAVE STATUS\G;
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/replica_SHOW_SLAVE_STATUS_G.png)
 
-SHOW SLAVE STATUS\G;
+Result:
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/master_CreateTable7.png)
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/Master_Test_table.png)
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/replica_DB_test.png)
 
+ 
 Шаг 3: НДля настройки отказоустойчивости MySQL с использованием Keepalived и виртуальных IP-адресов (VIP), чтобы обеспечить высокую доступность и автоматическое переключение между мастер-сервером и репликой, можно использовать следующую схему:
 
 Шаги для настройки отказоустойчивости с Keepalived:
 1. Установите Keepalived на обеих машинах (Master и Replica)
 На обоих серверах (Master и Replica) нужно установить Keepalived.
 
- 
+
 sudo apt-get update
 sudo apt-get install keepalived
 2. Настройка конфигурации Keepalived
@@ -129,17 +148,16 @@ vrrp_instance VI_1 {
 После настройки конфигурации на обоих серверах перезапустите службу Keepalived:
 
 На Master сервере:
-
- 
 sudo systemctl restart keepalived
+
 На Replica сервере:
 
- 
 sudo systemctl restart keepalived
 Убедитесь, что Keepalived запускается без ошибок:
 
  
 sudo systemctl status keepalived
+
 4. Настройка MySQL
 Убедитесь, что на Master сервере MySQL настроена репликация с Replica сервером, и данные синхронизируются между ними.
 
@@ -160,21 +178,22 @@ SHOW SLAVE STATUS\G;
 На Master сервере:
 
 ip a show dev enX0
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/master_ip.png)
 
 На Replica сервере:
 
 ip a show dev enX0
+![](https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24/blob/main/Homework18_Database_2/Pictures/replica_ip.png)
 
 Проверьте, что MySQL доступен по виртуальному IP:
 
 На любом сервере:
 
- 
 mysql -u root -p -h 192.168.0.100
-Остановите MySQL на Master сервере:
 
- 
+Остановите MySQL на Master сервере:
 sudo systemctl stop mysql
+
 В это время VIP должен автоматически переключиться на Replica сервер, и MySQL должен быть доступен через этот IP на реплике.
 
 После восстановления Master сервера (запуск MySQL), VIP снова должен вернуться на Master сервер.
