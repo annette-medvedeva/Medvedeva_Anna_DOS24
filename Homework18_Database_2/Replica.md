@@ -65,40 +65,122 @@ sudo systemctl restart mysql
 mysql -u root -p
 
 CHANGE MASTER TO
-MASTER_HOST='IP_главного_сервера',
+MASTER_HOST='172.31.42.194',
 MASTER_USER='replica_user',
-MASTER_PASSWORD='password',
-MASTER_LOG_FILE='mysql-bin.000001',  -- Значение из Master
-MASTER_LOG_POS=756;  -- Значение из Master
+MASTER_PASSWORD='1q2w3e4r5t',
+MASTER_LOG_FILE='mysql-bin.000012',  -- Значение из Master
+MASTER_LOG_POS=604;                 -- Значение из Master
 START SLAVE;
+SHOW SLAVE STATUS\G;
 
 SHOW SLAVE STATUS\G;
 
-Шаг 3: Настройка отказоустойчивости (кластер)
-Установить MySQL Router или MySQL InnoDB Cluster:
+Шаг 3: НДля настройки отказоустойчивости MySQL с использованием Keepalived и виртуальных IP-адресов (VIP), чтобы обеспечить высокую доступность и автоматическое переключение между мастер-сервером и репликой, можно использовать следующую схему:
 
-Установить mysql-shell на оба сервера:
+Шаги для настройки отказоустойчивости с Keepalived:
+1. Установите Keepalived на обеих машинах (Master и Replica)
+На обоих серверах (Master и Replica) нужно установить Keepalived.
+
  
-sudo apt install mysql-shell
+sudo apt-get update
+sudo apt-get install keepalived
+2. Настройка конфигурации Keepalived
+На Master сервере:
+Откройте файл конфигурации Keepalived:
 
-Настройте InnoDB Cluster на мастер-ноде:
  
-mysqlsh
-\connect root@localhost
-dba.createCluster('myCluster')
-cluster.addInstance('root@IP_второго_сервера')
+sudo nano /etc/keepalived/keepalived.conf
+Добавьте следующую конфигурацию для Master:
 
-
-Проверить статус кластера: В mysqlsh выполнить:
-
-cluster.status()
-
-Настроить автоматическое переключение:
-
-Убедитесь, что кластер настроен на использование автоматического failover:
  
-cluster.setOption('autoRejoinTries', 3)
-cluster.setOption('autoIncrementIncrement', 2)
+vrrp_instance VI_1 {
+    state MASTER
+    interface enX0          # Укажите ваш интерфейс, на котором будет работать VIP
+    virtual_router_id 51    # Уникальный идентификатор VRRP
+    priority 101            # Приоритет для мастера (100 - для реплики)
+    advert_int 1            # Интервал для отправки пакетов VRRP (по умолчанию 1 сек)
+    virtual_ipaddress {
+        192.168.0.100       # Виртуальный IP, который будет использоваться для подключения
+    }
+}
+Сохраните и закройте файл.
+
+На Replica сервере:
+Откройте файл конфигурации Keepalived:
+
+ 
+sudo nano /etc/keepalived/keepalived.conf
+Добавьте следующую конфигурацию для Replica:
+
+ 
+vrrp_instance VI_1 {
+    state BACKUP
+    interface enX0          # Укажите ваш интерфейс, на котором будет работать VIP
+    virtual_router_id 51    # Уникальный идентификатор VRRP
+    priority 100            # Приоритет для реплики (менее приоритетный, чем у мастера)
+    advert_int 1            # Интервал для отправки пакетов VRRP (по умолчанию 1 сек)
+    virtual_ipaddress {
+        192.168.0.100       # Виртуальный IP, который будет использоваться для подключения
+    }
+}
+Сохраните и закройте файл.
+
+3. Запуск и включение Keepalived
+После настройки конфигурации на обоих серверах перезапустите службу Keepalived:
+
+На Master сервере:
+
+ 
+sudo systemctl restart keepalived
+На Replica сервере:
+
+ 
+sudo systemctl restart keepalived
+Убедитесь, что Keepalived запускается без ошибок:
+
+ 
+sudo systemctl status keepalived
+4. Настройка MySQL
+Убедитесь, что на Master сервере MySQL настроена репликация с Replica сервером, и данные синхронизируются между ними.
+
+Проверьте, что Replica настроена как Slave для Master:
+
+На Master:
+
+SHOW MASTER STATUS;
+На Replica:
+ 
+SHOW SLAVE STATUS\G;
+
+5. Проверка отказоустойчивости
+После настройки и запуска Keepalived, создается виртуальный IP, который будет использоваться для доступа к MySQL-серверу. Этот IP будет "плавно" переключаться между Master и Replica серверами.
+
+Проверьте, что VIP (например, 192.168.0.100) доступен на обоих серверах:
+
+На Master сервере:
+
+ip a show dev enX0
+
+На Replica сервере:
+
+ip a show dev enX0
+
+Проверьте, что MySQL доступен по виртуальному IP:
+
+На любом сервере:
+
+ 
+mysql -u root -p -h 192.168.0.100
+Остановите MySQL на Master сервере:
+
+ 
+sudo systemctl stop mysql
+В это время VIP должен автоматически переключиться на Replica сервер, и MySQL должен быть доступен через этот IP на реплике.
+
+После восстановления Master сервера (запуск MySQL), VIP снова должен вернуться на Master сервер.
+
+6. Автоматическое переключение
+Keepalived будет следить за состоянием серверов. Если Master сервер перестанет работать, виртуальный IP будет перенаправлен на Replica сервер. Когда Master сервер восстановится, VIP снова будет привязан к нему.
 
 Шаг 4: Тестирование отказоустойчивости
 Отказ главного сервера:
