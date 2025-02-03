@@ -1,0 +1,6 @@
+Поиск по подстроке: Homework
+Найденные файлы:
+Homework18_Database_2
+Homework21_Python2
+Homework20_Python1
+Homework19_Ansible1
