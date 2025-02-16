@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    nginx_port: 8080
+    app_path: "/var/www/myapp"
+  roles:
+    - nginx_role

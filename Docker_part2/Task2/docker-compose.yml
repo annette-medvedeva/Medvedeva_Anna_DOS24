@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+  web:
+    build: .  
+    image: custom-nginx  
+    container_name: nginx_web
+    ports:
+     - "80:80"
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d
+     - ./static:/usr/share/nginx/html
+    links:
+     - db
+
+volumes:
+  postgres_data:  
