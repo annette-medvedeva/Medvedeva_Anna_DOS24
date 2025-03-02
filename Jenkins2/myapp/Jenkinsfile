@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    
+    parameters {
+        choice(
+            name: 'DEPLOY_ENV',
+            choices: ['dev', 'prod'],
+            description: 'Выберите окружение для деплоя'
+        )
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/annette-medvedeva/Medvedeva_Anna_DOS24.git', 
+                    branch: 'main'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                expression { params.DEPLOY_ENV == 'prod' }
+            }
+            steps {
+                echo "Деплой в ${params.DEPLOY_ENV} окружение"
+                // Здесь могут быть команды деплоя, например:
+                // sh 'mvn deploy'
+                // или запуск Docker-контейнера
+            }
+        }
+    }
+    
+    post {
+        success {
+            slackSend channel: '#jenkins',
+                message: "Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+        }
+        failure {
+            slackSend channel: '#jenkins',
+                message: "Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+        }
+    }
+}
